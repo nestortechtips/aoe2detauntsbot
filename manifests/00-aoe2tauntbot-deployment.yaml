@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: aoe2detauntsbot
+  name: aoe2detauntsbot
+  namespace: aoe2bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aoe2detauntsbot
+  template:
+    metadata:
+      labels:
+        app: aoe2detauntsbot
+    spec:
+      containers:
+      - image: amnestor/aoe2detauntsbot:TAG
+        name: aoe2detauntsbot
+        resources:
+          requests:
+            cpu: 128m
+            memory: 128Mi
+          limits:
+            cpu: 256m
+            memory: 256Mi
+        env:
+          - name: API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: API_TOKEN
+                name: aoe2detauntsscret
