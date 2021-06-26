@@ -119,7 +119,7 @@ TAUNT_EN = {
 def get_taunt(taunt, lang):
     logging.warning('Validando taunt')
     if (int(taunt) > 0 and int(taunt) <=105) and lang == 'EN' or lang == 'ES':
-        logging('Taunt validado exitosamente')
+        logging.warning('Taunt validado exitosamente')
         if lang == 'EN':
             return TAUNT_EN[taunt]
     else:
@@ -127,7 +127,7 @@ def get_taunt(taunt, lang):
         return 'Enter a valid taunt number.'
 
 def get_taunt_en(update, context):
-    logging('Procesando comando de taunts en inglés')
+    logging.warning('Procesando comando de taunts en inglés')
     context.bot.send_message(chat_id=update.effective_chat.id, text=get_taunt(str(update.message.text).split('/tnt_en')[1][1:], 'EN'))
 
 def start(update, context):
