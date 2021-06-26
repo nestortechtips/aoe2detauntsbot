@@ -65,6 +65,6 @@ node {
     }
 
     stage('Removing file'){
-        sshCommand remote: remote, command: "rm -rf aoe2tauntbot/"
+        sshCommand remote: remote, command: "rm -rf aoe2detauntsbot/"
     }
 }
