@@ -25,9 +25,16 @@ spec:
           limits:
             cpu: 256m
             memory: 256Mi
+        volumeMounts:
+          - mountPath: /log
+            name: app-logs
         env:
           - name: API_TOKEN
             valueFrom:
               secretKeyRef:
                 key: API_TOKEN
                 name: aoe2detauntsscret
+        volumes:
+        - name: app-logs
+          persistentVolumeClaim:
+            claimName: app-logs-nas

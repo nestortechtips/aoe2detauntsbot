@@ -57,11 +57,11 @@ node {
     }
     
     stage('Updating Manifest') {
-        sshCommand remote: remote, command: "sed -i -e \"s/TAG/${env.BUILD_NUMBER}/g\" /home/ubuntu/aoe2detauntsbot/manifests/00-aoe2tauntbot-deployment.yaml"
+        sshCommand remote: remote, command: "sed -i -e \"s/TAG/${env.BUILD_NUMBER}/g\" /home/ubuntu/aoe2detauntsbot/manifests/10-aoe2tauntbot-deployment.yaml"
   }
     
     stage('Applying manifest'){
-        sshCommand remote: remote, command: "kubectl apply -f /home/ubuntu/aoe2detauntsbot/manifests/00-aoe2tauntbot-deployment.yaml"
+        sshCommand remote: remote, command: "kubectl apply -f /home/ubuntu/aoe2detauntsbot/manifests/"
     }
 
     stage ('Adding reason of change to Kubernetes'){

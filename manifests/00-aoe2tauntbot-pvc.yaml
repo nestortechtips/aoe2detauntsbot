@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: app-logs-nas
+  namespace: aoe2bot
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "nfs-nas"
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

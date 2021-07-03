@@ -134,9 +134,9 @@ TAUNT_EN = {
 
 
 def get_taunt(taunt, lang):
-    logging.warning('Validando taunt')
+    logging.info('Validando taunt')
     if (int(taunt) > 0 and int(taunt) <=105) and lang == 'EN' or lang == 'ES':
-        logging.warning('Taunt validado exitosamente')
+        logging.info('Taunt validado exitosamente')
         if lang == 'EN':
             return TAUNT_EN[taunt]
     else:
@@ -144,28 +144,29 @@ def get_taunt(taunt, lang):
         return 'Enter a valid taunt number.'
 
 def get_taunt_en(update, context):
-    logging.warning('Procesando comando de taunts en inglés')
+    logging.info('Procesando comando de taunts en inglés')
     context.bot.send_message(chat_id=update.effective_chat.id, text=get_taunt(str(update.message.text).split('/tnt_en')[1][1:], 'EN'))
 
 def start(update, context):
-    logging.warning('Procesando comando de inicio')
+    logging.info('Procesando comando de inicio')
     context.bot.send_message(chat_id=update.effective_chat.id, text=START_MESSAGE)
 
 def main():
-    logging.basicConfig(format='%(asctime)s %(message)s')
-    logging.warning('Inicializando bot de taunts.')
-    logging.warning('Obteniendo token de autenticación')
+    HOST_NAME = str(os.environ['HOSTNAME'])
+    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', encoding='utf-8', level=logging.INFO, filename='/log/{HOST_NAME}.log'.format(HOST_NAME=HOST_NAME))
+    logging.info('Inicializando bot de taunts.')
+    logging.info('Obteniendo token de autenticación')
     API_TOKEN = str(os.environ['API_TOKEN'])
-    logging.warning('Autenticando con Telegram')
+    logging.info('Autenticando con Telegram')
     updater = Updater(token=API_TOKEN, use_context=True)
     dispatcher = updater.dispatcher
-    logging.warning('Registrando comando de inicio')
+    logging.info('Registrando comando de inicio')
     start_handler = CommandHandler('start', start)
     dispatcher.add_handler(start_handler)
-    logging.warning('Registrando comando de taunt en inglés')
+    logging.info('Registrando comando de taunt en inglés')
     taunt_en_handler = CommandHandler('tnt_en', get_taunt_en)
     dispatcher.add_handler(taunt_en_handler)
-    logging.warning('Iniciando escucha de usuarios')
+    logging.info('Iniciando escucha de usuarios')
     updater.start_polling()
     updater.idle()
 
