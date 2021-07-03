@@ -1,3 +1,20 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# Bot that shows the taunt's text from the Age of Empires 2 DE game.
+
+"""
+This Bot uses the Updater class to handle the commands coming from a text conversation.
+
+It defines the functions ot commands that the Bot can recognize, then the bot starts polling to be able to show the text when a user invokes it,
+with the available commands. The Bot will listen for commands until a System Signal is sent to it
+ 
+Usage:
+Send /start to initiate the conversation and show all available commands.
+Send /tnt_en {TAUNT_NUMBER} to provide the taunt in the english language
+Press Ctrl-C on the command line to interrupt the execution or Ctrl=Z to kill the Bot.
+"""
+
 import os, logging
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
@@ -150,6 +167,9 @@ def main():
     dispatcher.add_handler(taunt_en_handler)
     logging.warning('Iniciando escucha de usuarios')
     updater.start_polling()
+    updater.idle()
 
-main()
+
+if __name__ == '__main__':
+    main()
 
