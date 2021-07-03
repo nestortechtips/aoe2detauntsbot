@@ -153,7 +153,7 @@ def start(update, context):
 
 def main():
     HOST_NAME = str(os.environ['HOSTNAME'])
-    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', encoding='utf-8', level=logging.INFO, filename='/log/{HOST_NAME}.log'.format(HOST_NAME=HOST_NAME))
+    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO, filename='/log/{HOST_NAME}.log'.format(HOST_NAME=HOST_NAME))
     logging.info('Inicializando bot de taunts.')
     logging.info('Obteniendo token de autenticación')
     API_TOKEN = str(os.environ['API_TOKEN'])
