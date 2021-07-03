@@ -34,7 +34,7 @@ spec:
               secretKeyRef:
                 key: API_TOKEN
                 name: aoe2detauntsscret
-        volumes:
+      volumes:
         - name: app-logs
           persistentVolumeClaim:
             claimName: app-logs-nas
