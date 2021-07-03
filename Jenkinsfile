@@ -64,6 +64,10 @@ node {
         sshCommand remote: remote, command: "kubectl apply -f /home/ubuntu/aoe2detauntsbot/manifests/00-aoe2tauntbot-deployment.yaml"
     }
 
+    stage ('Adding reason of change to Kubernetes'){
+        sshCommand remote: remote, command: "kubectl annotate deploy/aoe2detauntsbot -n aoe2bot kubernetes.io/change-cause=\"Update the service to version ${env.BUILD_NUMBER}\" --record=false --overwrite=true"
+    }
+
     stage('Removing file'){
         sshCommand remote: remote, command: "rm -rf aoe2detauntsbot/"
     }
