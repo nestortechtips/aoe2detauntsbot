@@ -1,44 +1,44 @@
 node {
     def app
 
-    stage('Clone Code Repository') {
+    stage('[ARM64]Clone Code Repository') {
 
         checkout scm
     }
 
-    stage('Build Image Main Repository') {
+    stage('[ARM64]Build Image Main Repository') {
 
         app = docker.build("amnestor/aoe2detauntsbot")
     }
 
 
-    stage('Push Image Main Repository') {
+    stage('[ARM64]Push Image Main Repository') {
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
     }
 
-    stage('Build Image Backup Repository') {
+    stage('[ARM64]Build Image Backup Repository') {
 
         app = docker.build("nvertoletik/aoe2detauntsbot")
     }
 
 
-    stage('Push Image Backup Repository') {
+    stage('[ARM64]Push Image Backup Repository') {
         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-nvertoletik') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
     }
 
-    stage('Build Image Cloud Repository') {
+    stage('[ARM64]Build Image Cloud Repository') {
 
         app = docker.build("gcr.io/ace-app-dev/ntt/aoe2detauntsbot")
     }
 
 
-    stage('Push Image Cloud Repository') {
+    stage('[ARM64]Push Image Cloud Repository') {
         docker.withRegistry('https://gcr.io/', 'gcp-registry-dev') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
@@ -56,6 +56,10 @@ node {
         sshCommand remote: remote, command: "git clone https://github.com/nestortechtips/aoe2detauntsbot.git"
     }
     
+    stage('[AMD64]Building amd64 image in Cloud Build'){ 
+        sshCommand remote: remote, command: "gcloud builds submit --tag gcr.io/ace-app-dev/ntt/aoe2detauntsbot:${env.BUILD_NUMBER} /home/ubuntu/aoe2detauntsbot/"
+    }
+
     stage('Updating Manifest') {
         sshCommand remote: remote, command: "sed -i -e \"s/TAG/${env.BUILD_NUMBER}/g\" /home/ubuntu/aoe2detauntsbot/manifests/10-aoe2tauntbot-deployment.yaml"
   }
