@@ -32,47 +32,37 @@ node {
         }
     }
 
-    stage('[ARM64]Build Image Cloud Repository') {
-
-        app = docker.build("us-east1-docker.pkg.dev/ace-app-dev/ntt/aoe2detauntsbot")
-    }
-
-
-    stage('[ARM64]Push Image Cloud Repository') {
-        docker.withRegistry('https://us-east1-docker.pkg.dev/', 'gcp-registry-dev') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-        }
-    }
-    
     def remote = [:]
     remote.name = 'Master'
     remote.host = '192.168.1.173'
     remote.user = 'ubuntu'
     remote.password = 'raspberry'
     remote.allowAnyHosts = true
+
     
     stage('Pulling Changes To Local Repo'){ 
         sshCommand remote: remote, command: "git clone https://github.com/nestortechtips/aoe2detauntsbot.git"
     }
     
-    stage('[AMD64]Building amd64 image in Cloud Build'){ 
-        sshCommand remote: remote, command: "gcloud builds submit --tag us-east1-docker.pkg.dev/ace-app-dev/ntt/aoe2detauntsbot:${env.BUILD_NUMBER} /home/ubuntu/aoe2detauntsbot/"
-    }
 
     stage('Updating Manifest') {
-        sshCommand remote: remote, command: "sed -i -e \"s/TAG/${env.BUILD_NUMBER}/g\" /home/ubuntu/aoe2detauntsbot/manifests/10-aoe2tauntbot-deployment.yaml"
+        sshCommand remote: remote, command: "sed -i -e \"s/TAG/${env.BUILD_NUMBER}/g\" $GCP_BUILD_PATH/aoe2detauntsbot/manifests/10-aoe2tauntbot-deployment.yaml"
+        sshCommand remote: remote, command: "sed -i -e \"s/TAG/${env.BUILD_NUMBER}/g\" $GCP_BUILD_PATH/aoe2detauntsbot/cb.yaml"
   }
+
+    stage('[AMD64/ARM64]Building images in Cloud Build'){ 
+        sshCommand remote: remote, command: "gcloud builds submit --config $GCP_BUILD_PATH/aoe2detauntsbot/cb.yaml"
+    }
     
     stage('Applying manifest'){
-        sshCommand remote: remote, command: "kubectl apply -f /home/ubuntu/aoe2detauntsbot/manifests/"
+        sshCommand remote: remote, command: "kubectl apply -f $GCP_BUILD_PATH/aoe2detauntsbot/manifests/"
     }
 
     stage ('Adding reason of change to Kubernetes'){
-        sshCommand remote: remote, command: 'cd /home/ubuntu/aoe2detauntsbot; kubectl annotate deploy/aoe2detauntsbot -n aoe2bot kubernetes.io/change-cause=\"$(git log -1 --pretty=format:"%s")\" --record=false --overwrite=true'
+        sshCommand remote: remote, command: 'cd $GCP_BUILD_PATH/aoe2detauntsbot; kubectl annotate deploy/aoe2detauntsbot -n aoe2bot kubernetes.io/change-cause=\"$(git log -1 --pretty=format:"%s")\" --record=false --overwrite=true'
     }
 
     stage('Removing file'){
-        sshCommand remote: remote, command: "rm -rf /home/ubuntu/aoe2detauntsbot/"
+        sshCommand remote: remote, command: "rm -rf $GCP_BUILD_PATH/aoe2detauntsbot/"
     }
 }
