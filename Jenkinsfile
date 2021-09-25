@@ -46,8 +46,8 @@ node {
     
 
     stage('Updating Manifest') {
-        sshCommand remote: remote, command: "sed -i -e \"s/TAG/${env.BUILD_NUMBER}/g\" $GCP_BUILD_PATH/aoe2detauntsbot/manifests/10-aoe2tauntbot-deployment.yaml"
-        sshCommand remote: remote, command: "sed -i -e \"s/TAG/${env.BUILD_NUMBER}/g\" $GCP_BUILD_PATH/aoe2detauntsbot/cb.yaml"
+        sshCommand remote: remote, command: "sed -i -e \"s/TAG/${env.BUILD_NUMBER}/g\" \$GCP_BUILD_PATH/aoe2detauntsbot/manifests/10-aoe2tauntbot-deployment.yaml"
+        sshCommand remote: remote, command: "sed -i -e \"s/TAG/${env.BUILD_NUMBER}/g\" \$GCP_BUILD_PATH/aoe2detauntsbot/cb.yaml"
   }
 
     stage('[AMD64/ARM64]Building images in Cloud Build'){ 
