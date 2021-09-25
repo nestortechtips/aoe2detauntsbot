@@ -34,12 +34,12 @@ node {
 
     stage('[ARM64]Build Image Cloud Repository') {
 
-        app = docker.build("gcr.io/ace-app-dev/ntt/aoe2detauntsbot")
+        app = docker.build("us-east1-docker.pkg.dev/ace-app-dev/ntt/aoe2detauntsbot")
     }
 
 
     stage('[ARM64]Push Image Cloud Repository') {
-        docker.withRegistry('https://gcr.io/', 'gcp-registry-dev') {
+        docker.withRegistry('https://us-east1-docker.pkg.dev/', 'gcp-registry-dev') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
@@ -57,7 +57,7 @@ node {
     }
     
     stage('[AMD64]Building amd64 image in Cloud Build'){ 
-        sshCommand remote: remote, command: "gcloud builds submit --tag gcr.io/ace-app-dev/ntt/aoe2detauntsbot:${env.BUILD_NUMBER} /home/ubuntu/aoe2detauntsbot/"
+        sshCommand remote: remote, command: "gcloud builds submit --tag us-east1-docker.pkg.dev/ace-app-dev/ntt/aoe2detauntsbot:${env.BUILD_NUMBER} /home/ubuntu/aoe2detauntsbot/"
     }
 
     stage('Updating Manifest') {

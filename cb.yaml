@@ -31,7 +31,7 @@ steps:
       - '--platform'
       - $_DOCKER_BUILDX_PLATFORMS
       - '-t'
-      - 'gcr.io/ace-app-dev/ntt/aoe2detauntsbot:TAG'
+      - 'us-east1-docker.pkg.dev/ace-app-dev/ntt/aoe2detauntsbot:TAG'
       - '--push'
       - .
     id: build-multi-architecture-container-image
