@@ -13,15 +13,15 @@ fi
 JENKINS_BUILD_NUMBER=$1
 
 echo -e "${YLW}Building Container Image in Cloud build ${NC}"
-echo -e "${YLW}Assigning new Tag for Container Image in Kubernetes Deployment${NC}"
+echo -e "${YLW} Assigning new Tag for Container Image in Kubernetes Deployment${NC}"
 sed -i -e "s/TAG/$JENKINS_BUILD_NUMBER/g" $GCP_BUILD_PATH/aoe2detauntsbot/manifests/10-aoe2tauntbot-deployment.yaml
-echo -e "${YLW}Assigning new Tag for Container Image${NC}"
-sed -i -e "s/TAG/$JENKINS_BUILD_NUMBER/g" $GCP_BUILD_PATH/aoe2detauntsbot/build/cb.yaml
-echo -e "${YLW}Submitting Build to Cloud Build${NC}"
-gcloud builds submit --config $GCP_BUILD_PATH/aoe2detauntsbot/build/cb.yaml
-echo -e "${YLW}Applying Kubernetes Manifest${NC}"
+echo -e "${YLW} Assigning new Tag for Container Image${NC}"
+sed -i -e "s/TAG/$JENKINS_BUILD_NUMBER/g" $GCP_BUILD_PATH/aoe2detauntsbot/cb.yaml
+echo -e "${YLW} Submitting Build to Cloud Build${NC}"
+gcloud builds submit --config $GCP_BUILD_PATH/aoe2detauntsbot/cb.yaml
+echo -e "${YLW} Applying Kubernetes Manifest${NC}"
 kubectl apply -f $GCP_BUILD_PATH/aoe2detauntsbot/manifests/
-echo -e "${YLW}annotating Manifest${NC}"
+echo -e "${YLW} annotating Manifest${NC}"
 cd $GCP_BUILD_PATH/aoe2detauntsbot; kubectl annotate deploy/aoe2detauntsbot -n aoe2bot kubernetes.io/change-cause="$(git log -1 --pretty=format:"%s")" --record=false --overwrite=true
-echo -e "${YLW}Deleting Local Files${NC}"
+echo -e "${YLW} Deleting Local Files${NC}"
 rm -rf $GCP_BUILD_PATH/aoe2detauntsbot/
