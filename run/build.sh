@@ -16,9 +16,9 @@ echo -e "${YLW}Building Container Image in Cloud build ${NC}"
 echo -e "${YLW}Assigning new Tag for Container Image in Kubernetes Deployment${NC}"
 sed -i -e "s/TAG/$JENKINS_BUILD_NUMBER/g" $GCP_BUILD_PATH/aoe2detauntsbot/manifests/10-aoe2tauntbot-deployment.yaml
 echo -e "${YLW}Assigning new Tag for Container Image${NC}"
-sed -i -e "s/TAG/$JENKINS_BUILD_NUMBER/g" $GCP_BUILD_PATH/aoe2detauntsbot/cb.yaml
+sed -i -e "s/TAG/$JENKINS_BUILD_NUMBER/g" $GCP_BUILD_PATH/aoe2detauntsbot/build/cb.yaml
 echo -e "${YLW}Submitting Build to Cloud Build${NC}"
-gcloud builds submit --config $GCP_BUILD_PATH/aoe2detauntsbot/cb.yaml
+gcloud builds submit --config $GCP_BUILD_PATH/aoe2detauntsbot/build/cb.yaml
 echo -e "${YLW}Applying Kubernetes Manifest${NC}"
 kubectl apply -f $GCP_BUILD_PATH/aoe2detauntsbot/manifests/
 echo -e "${YLW}annotating Manifest${NC}"
