@@ -164,7 +164,7 @@ def main():
     start_handler = CommandHandler('start', start)
     dispatcher.add_handler(start_handler)
     logging.info('Registrando comando de taunt en inglés')
-    taunt_en_handler = CommandHandler('tnt_en', get_taunt_en)
+    taunt_en_handler = CommandHandler('t', get_taunt_en)
     dispatcher.add_handler(taunt_en_handler)
     logging.info('Iniciando escucha de usuarios')
     updater.start_polling()
