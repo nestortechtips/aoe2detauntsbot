@@ -11,7 +11,7 @@ with the available commands. The Bot will listen for commands until a System Sig
  
 Usage:
 Send /start to initiate the conversation and show all available commands.
-Send /tnt_en {TAUNT_NUMBER} to provide the taunt in the english language
+Send /t {TAUNT_NUMBER} to provide the taunt in the english language
 Press Ctrl-C on the command line to interrupt the execution or Ctrl=Z to kill the Bot.
 """
 
@@ -21,7 +21,7 @@ from telegram.ext import CommandHandler
 
 
 START_MESSAGE = '''To start using this bot you can use the following commands.\n\n\r
-/tnt_en {TAUNT_NUMBER} - Provides the taunt in the english language\n\r
+/t {TAUNT_NUMBER} - Provides the taunt in the english language\n\r
 To reach out to us, send an email to support@nestortechtips.online'''
 
 TAUNT_EN = {
@@ -145,7 +145,7 @@ def get_taunt(taunt, lang):
 
 def get_taunt_en(update, context):
     logging.info('Procesando comando de taunts en inglés')
-    context.bot.send_message(chat_id=update.effective_chat.id, text=get_taunt(str(update.message.text).split('/tnt_en')[1][1:], 'EN'))
+    context.bot.send_message(chat_id=update.effective_chat.id, text=get_taunt(str(update.message.text).split('/t')[1][1:], 'EN'))
 
 def start(update, context):
     logging.info('Procesando comando de inicio')
