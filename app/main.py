@@ -20,9 +20,9 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler
 
 
-START_MESSAGE = '''To start using this bot you can use the following commands.\n\n\r
+START_MESSAGE = """To start using this bot you can use the following commands.\n\n\r
 /t {TAUNT_NUMBER} - Provides the taunt in the english language\n\r
-To reach out to us, send an email to support@nestortechtips.online'''
+To reach out to us, send an email to support@nestortechtips.online"""
 
 TAUNT_EN = {
     "1": "Yes",
@@ -129,48 +129,57 @@ TAUNT_EN = {
     "102": "Attack the Enemy With Unique Warships",
     "103": "Use an Onager to cut Down Trees at the Flared Location",
     "104": "Don’t Resign",
-    "105": "You can Resign Now"
+    "105": "You can Resign Now",
 }
 
 
 def get_taunt(taunt, lang):
-    logging.info('Validando taunt')
-    if (int(taunt) > 0 and int(taunt) <=105) and lang == 'EN' or lang == 'ES':
-        logging.info('Taunt validado exitosamente')
-        if lang == 'EN':
+    logging.info("Validando taunt")
+    if (int(taunt) > 0 and int(taunt) <= 105) and lang == "EN" or lang == "ES":
+        logging.info("Taunt validado exitosamente")
+        if lang == "EN":
             return TAUNT_EN[taunt]
     else:
-        logging.warning('Taunt no valido')
-        return 'Enter a valid taunt number.'
+        logging.warning("Taunt no valido")
+        return "Enter a valid taunt number."
+
 
 def get_taunt_en(update, context):
-    logging.info('Procesando comando de taunts en inglés')
-    context.bot.send_message(chat_id=update.effective_chat.id, text=get_taunt(str(update.message.text).split('/t')[1][1:], 'EN'))
+    logging.info("Procesando comando de taunts en inglés")
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=get_taunt(str(update.message.text).split("/t")[1][1:], "EN"),
+    )
+
 
 def start(update, context):
-    logging.info('Procesando comando de inicio')
+    logging.info("Procesando comando de inicio")
     context.bot.send_message(chat_id=update.effective_chat.id, text=START_MESSAGE)
 
+
 def main():
-    HOST_NAME = str(os.environ['HOSTNAME'])
-    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO, filename='/log/{HOST_NAME}.log'.format(HOST_NAME=HOST_NAME))
-    logging.info('Inicializando bot de taunts.')
-    logging.info('Obteniendo token de autenticación')
-    API_TOKEN = str(os.environ['API_TOKEN'])
-    logging.info('Autenticando con Telegram')
+    HOST_NAME = str(os.environ["HOSTNAME"])
+    logging.basicConfig(
+        format="%(asctime)s %(levelname)s %(message)s",
+        level=logging.INFO,
+        filename="/log/{HOST_NAME}.log".format(HOST_NAME=HOST_NAME),
+    )
+    logging.info("Inicializando bot de taunts.")
+    logging.info("Obteniendo token de autenticación")
+    API_TOKEN = str(os.environ["API_TOKEN"])
+    logging.info("Autenticando con Telegram")
     updater = Updater(token=API_TOKEN, use_context=True)
     dispatcher = updater.dispatcher
-    logging.info('Registrando comando de inicio')
-    start_handler = CommandHandler('start', start)
+    logging.info("Registrando comando de inicio")
+    start_handler = CommandHandler("start", start)
     dispatcher.add_handler(start_handler)
-    logging.info('Registrando comando de taunt en inglés')
-    taunt_en_handler = CommandHandler('t', get_taunt_en)
+    logging.info("Registrando comando de taunt en inglés")
+    taunt_en_handler = CommandHandler("t", get_taunt_en)
     dispatcher.add_handler(taunt_en_handler)
-    logging.info('Iniciando escucha de usuarios')
+    logging.info("Iniciando escucha de usuarios")
     updater.start_polling()
     updater.idle()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
