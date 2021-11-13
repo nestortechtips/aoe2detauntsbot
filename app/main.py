@@ -135,7 +135,11 @@ TAUNT_EN = {
 
 def get_taunt(taunt, lang):
     logging.info("Validando taunt")
-    if (int(taunt) > 0 and int(taunt) <= 105) and lang == "EN" or lang == "ES":
+
+    if 'AoE2DETauntsBot' in taunt:
+        get_taunt(taunt.split('AoE2DETauntsBot ')[1], 'EN')
+
+    if (int(taunt) > 0 and int(taunt) <= 105) and (lang == "EN" or lang == "ES"):
         logging.info("Taunt validado exitosamente")
         if lang == "EN":
             return TAUNT_EN[taunt]
