@@ -15,24 +15,4 @@ node {
         sshCommand remote: remoteArm64, command: "cd aoe2detauntsbot/run;./build.sh ${env.BUILD_NUMBER}"
     }
     
-    def app
-
-    stage('[ARM64]Clone Code Repository') {
-
-        checkout scm
-    }
-
-    stage('[ARM64]Build Image Backup Repository') {
-
-        app = docker.build("nvertoletik/aoe2detauntsbot")
-    }
-
-
-    stage('[ARM64]Push Image Backup Repository') {
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-nvertoletik') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-        }
-    }
-
 }

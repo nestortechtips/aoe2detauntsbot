@@ -16,24 +16,24 @@ spec:
         app: aoe2detauntsbot
     spec:
       containers:
-      - image: amnestor/aoe2detauntsbot:TAG
-        name: aoe2detauntsbot
-        resources:
-          requests:
-            cpu: 128m
-            memory: 128Mi
-          limits:
-            cpu: 256m
-            memory: 256Mi
-        volumeMounts:
-          - mountPath: /log
-            name: app-logs
-        env:
-          - name: API_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: API_TOKEN
-                name: aoe2detauntsscret
+        - image: us-east1-docker.pkg.dev/ace-app-dev/ntt/aoe2detauntsbot:TAG
+          name: aoe2detauntsbot
+          resources:
+            requests:
+              cpu: 128m
+              memory: 128Mi
+            limits:
+              cpu: 256m
+              memory: 256Mi
+          volumeMounts:
+            - mountPath: /log
+              name: app-logs
+          env:
+            - name: API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: API_TOKEN
+                  name: aoe2detauntsscret
       volumes:
         - name: app-logs
           persistentVolumeClaim:
