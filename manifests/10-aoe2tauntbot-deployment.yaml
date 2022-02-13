@@ -16,7 +16,7 @@ spec:
         app: aoe2detauntsbot
     spec:
       containers:
-        - image: us-east1-docker.pkg.dev/ace-app-dev/ntt/aoe2detauntsbot:TAG
+        - image: nvertoletik/aoe2detauntsbot:TAG
           name: aoe2detauntsbot
           resources:
             requests:
