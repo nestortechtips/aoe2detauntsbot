@@ -16,7 +16,7 @@ spec:
         app: aoe2detauntsbot
     spec:
       containers:
-        - image: nvertoletik/aoe2detauntsbot:TAG
+        - image: nvertoletik/aoe2detauntsbot:33
           name: aoe2detauntsbot
           resources:
             requests:
@@ -36,5 +36,5 @@ spec:
                   name: aoe2detauntsscret
       volumes:
         - name: app-logs
-          persistentVolumeClaim:
-            claimName: app-logs-nas
+          hostPath:
+            path: /opt/kubernetes/aoe2detauntsbot/
